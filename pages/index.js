@@ -1,7 +1,22 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { useQuery, gql } from '@apollo/client'
+
+const TRANSACTIONS = gql`
+  query GetTransactions {
+    transactions (where: {amount_usd: {_gte: 10}})
+    {
+      id
+    }
+  }
+`
 
 export default function Home() {
+  const { loading, error, data } = useQuery(TRANSACTIONS)
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error :(</p>
+
   return (
     <div className={styles.container}>
       <Head>
