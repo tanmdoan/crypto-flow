@@ -1,6 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 export default async (req, res) => {
+  if (!(req.query.superSekretKey === `${process.env.SUPER_SEKRET_KEY}`)) {
+    res.statusCode = 401;
+    res.json({ error: 'Unauthenticated' });
+  }
+
   const start = parseInt((new Date() - 60 * 60 * 1000) / 1000);
 
   const data = await fetch(
